@@ -9,9 +9,9 @@ searchBarTyped()
 tableColumnModified()
 saveButtonClicked()
 openButtonClicked()
-itemNameValidator()
-serialNumberValidator()
-priceValidator()
+validateItemName()
+validateSerialNumber()
+validatePrice()
 addItem()
 editItem()
 deleteItem()
@@ -33,6 +33,12 @@ class Item
 serialNumber : String
 itemName : String
 price : double
+getSerialNumber()
+getItemName()
+getPrice()
+setSerialNumber()
+setItemName()
+setPrice()
 }
 
 class FileManager
