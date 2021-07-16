@@ -1,0 +1,53 @@
+@startuml
+
+class InventoryTrackerController
+{
+displayedItems : ObservableList
+addItemButtonClicked()
+deleteItemButtonClicked()
+searchBarTyped()
+tableColumnModified()
+saveButtonClicked()
+openButtonClicked()
+itemNameValidator()
+serialNumberValidator()
+priceValidator()
+addItem()
+editItem()
+deleteItem()
+save()
+open()
+updateTableView()
+}
+
+class InventoryList
+{
+itemList : TreeMap
+addItem()
+deleteItem()
+editItem()
+}
+
+class Item
+{
+serialNumber : String
+itemName : String
+price : double
+}
+
+class FileManager
+{
+selectedFile : File
+getJSONString()
+getHTMLString()
+getTSVString()
+save()
+getFileInput()
+getItemList()
+}
+
+InventoryTrackerController -- InventoryList
+InventoryList -- Item
+InventoryTrackerController -- FileManager
+
+@enduml
