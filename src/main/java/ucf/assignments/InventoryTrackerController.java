@@ -76,22 +76,12 @@ public class InventoryTrackerController {
         //Call inventoryList's addItem method
         inventoryList.addItem(inputSerialNumber, inputItemName, Double.parseDouble(inputPrice));
         //Get inventory list as observable list
-        displayedItems = getDisplayedItemsList();
+        displayedItems = getCompleteItemList();
     }
 
-    public ObservableList<Item> getDisplayedItemsList(){
+    public ObservableList<Item> getCompleteItemList(){
 
-        //Create Observable List to display items in TableView
-        ObservableList<Item> updatedItems = FXCollections.observableArrayList();
-        //Get list of keys in inventoryList map
-        List<String> keys = inventoryList.getItemList().keySet().stream().toList();
-        //Iterate through inventoryList to add items to Observable List
-        for (String key : keys) {
-            updatedItems.add(inventoryList.getItemList().get(key));
-        }
-
-        //Return observable list of items
-        return updatedItems;
+        return inventoryList.getCompleteInventoryList();
     }
 
     private void updateTableView(ObservableList<Item> displayedItems){
@@ -132,7 +122,7 @@ public class InventoryTrackerController {
             //Delete selected item
             deleteItem(selectedItem);
             //Get updated inventory list as observable list
-            displayedItems = getDisplayedItemsList();
+            displayedItems = getCompleteItemList();
             //Update table view with observable list
             updateTableView(displayedItems);
         }
@@ -224,7 +214,7 @@ public class InventoryTrackerController {
                 //Set price of corresponding item in TreeMap to new value
                 inventoryList.getItemList().get(currentSerialNumber).setPrice(Double.parseDouble(newValue));
                 //Update displayedItems Observable List
-                displayedItems = getDisplayedItemsList();
+                displayedItems = getCompleteItemList();
             }
             case 1 -> {
                 //Get edited item from Observable List
@@ -236,13 +226,13 @@ public class InventoryTrackerController {
                 //Add edited item with new serial number as its key
                 inventoryList.getItemList().put(newValue, editedItem);
                 //Update displayedItems Observable List
-                displayedItems = getDisplayedItemsList();
+                displayedItems = getCompleteItemList();
             }
             case 2 -> {
                 //Set item name of corresponding item in TreeMap to new value
                 inventoryList.getItemList().get(currentSerialNumber).setItemName(newValue);
                 //Update displayedItems Observable List
-                displayedItems = getDisplayedItemsList();
+                displayedItems = getCompleteItemList();
             }
         }
     }
@@ -252,31 +242,17 @@ public class InventoryTrackerController {
 
         //Set displayedItems to search results if search query is provided, otherwise set to display all items
         if (searchBar.getText().equals("")){
-            displayedItems = getDisplayedItemsList();
+            displayedItems = getCompleteItemList();
         }
         else{
             String searchString = searchBar.getText();
-            displayedItems = getSearchResults(searchString);
+            displayedItems = inventoryList.getSearchResults(searchString);
         }
         //Update table with either search results or full list
         updateTableView(displayedItems);
     }
 
-    public ObservableList<Item> getSearchResults(String searchString){
-
-        //Create Observable List to store search results
-        ObservableList<Item> searchResults = FXCollections.observableArrayList();
-        //Get list of keys of inventoryList TreeMap
-        List<String> keys = inventoryList.getItemList().keySet().stream().toList();
-        //Iterate through TreeMap using keys to check if search query matches any serial numbers or item names
-        for(String key : keys){
-            if (key.toLowerCase().contains(searchString.toLowerCase()) || inventoryList.getItemList().get(key).getItemName().toLowerCase().contains(searchString.toLowerCase())){
-                //Add to search results
-                searchResults.add(inventoryList.getItemList().get(key));
-            }
-        }
-
-        //Return search results
-        return searchResults;
+    public InventoryList getInventoryList(){
+        return inventoryList;
     }
 }
