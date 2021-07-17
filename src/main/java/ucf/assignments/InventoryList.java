@@ -9,7 +9,6 @@ import java.util.TreeMap;
 
 public class InventoryList {
 
-
     TreeMap<String, Item> itemList = new TreeMap<>();
 
     public void addItem(String serialNumber, String name, double price){
@@ -22,5 +21,4 @@ public class InventoryList {
     public TreeMap<String, Item> getItemList() {
         return itemList;
     }
-
 }

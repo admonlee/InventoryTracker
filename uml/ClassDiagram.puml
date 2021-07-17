@@ -2,7 +2,6 @@
 
 class InventoryTrackerController
 {
-displayedItems : ObservableList
 addItemButtonClicked()
 deleteItemButtonClicked()
 searchBarTyped()
@@ -17,7 +16,9 @@ editItem()
 deleteItem()
 save()
 open()
+getDisplayedItems()
 updateTableView()
+clearTextFields()
 }
 
 class InventoryList
@@ -32,7 +33,7 @@ class Item
 {
 serialNumber : String
 itemName : String
-price : double
+price : String
 getSerialNumber()
 getItemName()
 getPrice()

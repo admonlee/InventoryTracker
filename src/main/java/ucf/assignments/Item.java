@@ -5,16 +5,17 @@
 
 package ucf.assignments;
 
+
 public class Item {
 
     private String serialNumber;
     private String itemName;
-    private double price;
+    private String price;
 
-    public Item(String serialNumber, String itemName, double price) {
+    public Item(String serialNumber, String itemName, Double price) {
         this.serialNumber = serialNumber;
         this.itemName = itemName;
-        this.price = price;
+        this.price = String.format("$%.2f", price);
     }
 
     public String getSerialNumber() {
@@ -33,11 +34,11 @@ public class Item {
         this.itemName = itemName;
     }
 
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 

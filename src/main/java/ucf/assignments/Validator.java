@@ -20,7 +20,7 @@ public class Validator {
         boolean serialNumberValidity = false;
 
         //Check if serial number is alphanumeric
-        if (inputSerialNumber.matches("^[a-zA-Z0-9]{10,}$")){
+        if (inputSerialNumber.matches("^[a-zA-Z0-9]{10}$")){
             //Check if serial number already exists in the item list TreeMap
             serialNumberValidity = !itemList.containsKey(inputSerialNumber);
         }

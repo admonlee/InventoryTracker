@@ -87,6 +87,18 @@ class ValidatorTest {
     }
 
     @Test
+    void validateSerialNumber_blank_item_list_exceeding_chars_wrong_format() {
+
+        //Create new validator and empty TreeMap
+        Validator validator = new Validator();
+        TreeMap<String, Item> testMap = new TreeMap<>();
+        String input = "ABCDEFGHIJK";
+        //Assert that validator returns false when serial number is 10 characters long with an invalid character
+        assertFalse(validator.validateSerialNumber(input, testMap));
+
+    }
+
+    @Test
     void validateSerialNumber_blank_item_list_sufficient_chars_all_letters() {
 
         //Create new validator and empty TreeMap
