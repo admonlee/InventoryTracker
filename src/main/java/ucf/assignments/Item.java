@@ -38,8 +38,8 @@ public class Item {
         return price;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setPrice(double price) {
+        this.price = String.format("$%.2f", price);
     }
 
 }

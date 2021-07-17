@@ -13,7 +13,7 @@ class InventoryTrackerControllerTest {
         //Create new instance of InventoryTrackerController
         InventoryTrackerController test = new InventoryTrackerController();
         //Add one item
-        test.addItems("1234567890", "Test", "12.50");
+        test.addItem("1234567890", "Test", "12.50");
         //Get observable list
         ObservableList<Item> actual = test.getDisplayedItemsList();
 
@@ -27,8 +27,8 @@ class InventoryTrackerControllerTest {
         //Create new instance of InventoryTrackerController
         InventoryTrackerController test = new InventoryTrackerController();
         //Add two items
-        test.addItems("1234567890", "Test1", "12.50");
-        test.addItems("ABCDEFGHIJ", "Test2", "30.00");
+        test.addItem("1234567890", "Test1", "12.50");
+        test.addItem("ABCDEFGHIJ", "Test2", "30.00");
         //Get observable list
         ObservableList<Item> actual = test.getDisplayedItemsList();
 
@@ -43,7 +43,7 @@ class InventoryTrackerControllerTest {
         InventoryTrackerController test = new InventoryTrackerController();
         //Add 100 items with a for loop
         for(int i = 0; i < 100; i++){
-            test.addItems(String.valueOf(i + 1000000000), "Test", "12.50");
+            test.addItem(String.valueOf(i + 1000000000), "Test", "12.50");
         }
         //Get observable list
         ObservableList<Item> actual = test.getDisplayedItemsList();
@@ -58,7 +58,7 @@ class InventoryTrackerControllerTest {
         //Create new instance of InventoryTrackerController
         InventoryTrackerController test = new InventoryTrackerController();
         //Add item
-        test.addItems("1234567890", "Test", "12.50");
+        test.addItem("1234567890", "Test", "12.50");
         //Get created item
         Item testItem = test.getDisplayedItemsList().get(0);
         //Delete item
@@ -77,8 +77,8 @@ class InventoryTrackerControllerTest {
         //Create new instance of InventoryTrackerController
         InventoryTrackerController test = new InventoryTrackerController();
         //Add items
-        test.addItems("1234567890", "Test", "12.50");
-        test.addItems("1234567899", "Test", "12.50");
+        test.addItem("1234567890", "Test", "12.50");
+        test.addItem("1234567899", "Test", "12.50");
         //Get first item
         Item testItem = test.getDisplayedItemsList().get(0);
         //Delete first item
@@ -97,8 +97,8 @@ class InventoryTrackerControllerTest {
         //Create new instance of InventoryTrackerController
         InventoryTrackerController test = new InventoryTrackerController();
         //Add items
-        test.addItems("1234567890", "Test", "12.50");
-        test.addItems("1234567899", "Test", "12.50");
+        test.addItem("1234567890", "Test", "12.50");
+        test.addItem("1234567899", "Test", "12.50");
         //Get second item
         Item testItem = test.getDisplayedItemsList().get(1);
         //Delete item
@@ -118,7 +118,7 @@ class InventoryTrackerControllerTest {
         InventoryTrackerController test = new InventoryTrackerController();
         //Add one hundred items with a for loop
         for (int i = 0; i < 100; i++){
-            test.addItems(String.valueOf(1000000000 + i), "Test", "12.50");
+            test.addItem(String.valueOf(1000000000 + i), "Test", "12.50");
         }
         //Delete all items with a for loop
         for (int i = 0; i < 100; i++){
@@ -140,7 +140,7 @@ class InventoryTrackerControllerTest {
         InventoryTrackerController test = new InventoryTrackerController();
         //Add one hundred items with a for loop
         for (int i = 0; i < 100; i++){
-            test.addItems(String.valueOf(1000000000 + i), "Test", "12.50");
+            test.addItem(String.valueOf(1000000000 + i), "Test", "12.50");
         }
         //Delete all items with a for loop
         for (int i = 99; i >= 0; i--){
@@ -153,5 +153,51 @@ class InventoryTrackerControllerTest {
 
         //Assert that observable list is empty
         assertEquals(0, actual.size());
+    }
+
+    @Test
+    void editItem_price(){
+
+        //Create new instance of InventoryTrackerController
+        InventoryTrackerController test = new InventoryTrackerController();
+        //Add item
+        test.addItem("1234567890", "Test", "12.50");
+        //Edit serial number
+        test.editItem(0, 0, "12.50", "1234567890");
+
+        //Get edited serial number
+        String actual = test.getDisplayedItemsList().get(0).getPrice();
+        assertEquals("$12.50", actual);
+    }
+
+    @Test
+    void editItem_item_name(){
+
+        //Create new instance of InventoryTrackerController
+        InventoryTrackerController test = new InventoryTrackerController();
+        //Add item
+        test.addItem("1234567890", "Test", "12.50");
+        //Edit serial number
+        test.editItem(2, 0, "Test edit", "1234567890");
+
+        //Get edited serial number
+        String actual = test.getDisplayedItemsList().get(0).getItemName();
+        assertEquals("Test edit", actual);
+    }
+
+    @Test
+    void editItem_serial_number(){
+
+        //Create new instance of InventoryTrackerController
+        InventoryTrackerController test = new InventoryTrackerController();
+        //Add item
+        test.addItem("1234567890", "Test", "12.50");
+        test.addItem("1234567899", "Test", "12.50");
+        //Edit serial number
+        test.editItem(1, 0, "123456788", "1234567890");
+
+        //Get edited serial number
+        String actual = test.getDisplayedItemsList().get(0).getSerialNumber();
+        assertEquals("123456788", actual);
     }
 }

@@ -15,17 +15,17 @@
    <children>
       <HBox layoutY="500.0" prefHeight="26.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
+            <TextField fx:id="priceInputField" prefHeight="26.0" prefWidth="159.0" promptText="Value" />
             <TextField fx:id="serialNumberInputField" prefHeight="26.0" prefWidth="161.0" promptText="Serial Number" />
             <TextField fx:id="itemNameInputField" prefHeight="26.0" prefWidth="343.0" promptText="Item Name" />
-            <TextField fx:id="priceInputField" prefHeight="26.0" prefWidth="159.0" promptText="Price" />
             <Button fx:id="addItemButton" mnemonicParsing="false" onAction="#addItemButtonClicked" prefHeight="26.0" prefWidth="137.0" text="Add Item" />
          </children>
       </HBox>
       <TableView fx:id="inventoryTableView" editable="true" layoutX="7.0" layoutY="51.0" prefHeight="523.0" prefWidth="800.0" AnchorPane.bottomAnchor="26.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
         <columns>
-          <TableColumn fx:id="serialNumberColumn" prefWidth="183.20001524686813" text="Serial Number" />
-          <TableColumn fx:id="itemNameColumn" prefWidth="529.5999603271484" text="Item Name" />
-            <TableColumn fx:id="priceColumn" minWidth="0.0" prefWidth="85.5999755859375" text="Price" />
+          <TableColumn fx:id="priceColumn" onEditCommit="#editCommit" onEditStart="#editStart" prefWidth="111.20001524686813" text="Value" />
+          <TableColumn fx:id="serialNumberColumn" onEditCommit="#editCommit" onEditStart="#editStart" prefWidth="237.59996032714844" text="Serial Number" />
+            <TableColumn fx:id="itemNameColumn" minWidth="0.0" onEditCommit="#editCommit" onEditStart="#editStart" prefWidth="451.199951171875" text="Name" />
         </columns>
          <contextMenu>
             <ContextMenu>

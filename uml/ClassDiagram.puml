@@ -2,8 +2,11 @@
 
 class InventoryTrackerController
 {
+currentSerialNumber : String
 addItemButtonClicked()
-deleteItemButtonClicked()
+deleteButtonClicked()
+editStart()
+editCommit()
 searchBarTyped()
 tableColumnModified()
 saveButtonClicked()
@@ -12,8 +15,8 @@ validateItemName()
 validateSerialNumber()
 validatePrice()
 addItem()
-editItem()
 deleteItem()
+editItem()
 save()
 open()
 getDisplayedItems()

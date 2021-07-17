@@ -31,6 +31,9 @@ public class InventoryTrackerController {
     private final InventoryList inventoryList = new InventoryList();
     private final Validator validator = new Validator();
 
+    //Variable to store the serial number of item being edited to access TreeMap
+    private String currentSerialNumber;
+
     @FXML
     public void addItemButtonClicked(){
 
@@ -47,7 +50,7 @@ public class InventoryTrackerController {
         //If all inputs are valid, add items to inventory list
         if (validPrice && validSerialNumber && validInputName){
             //Add item to inventory list
-            addItems(inputSerialNumber, inputItemName, inputPrice);
+            addItem(inputSerialNumber, inputItemName, inputPrice);
             //Get inventory list as observable list
             displayedItems = getDisplayedItemsList();
             //Update table view with observable list
@@ -56,29 +59,20 @@ public class InventoryTrackerController {
             clearTextFields();
         }
         else{
-            String warningMessage;
             //Set warning message according to which input is invalid
             if(!validSerialNumber){
-                warningMessage = "Please enter a unique alphanumeric serial number of 10 characters.";
+                warningDialogHandler(1);
             }
             else if(!validInputName){
-                warningMessage = "Item name must be between 2 and 256 characters long.";
+                warningDialogHandler(2);
             }
             else{
-                warningMessage = "Price must be number larger than 0.";
+                warningDialogHandler(0);
             }
-            //Create new alert
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            //Set title, header, and content text of alert dialog box
-            alert.setTitle("Invalid Input");
-            alert.setHeaderText("Invalid input.");
-            alert.setContentText(warningMessage);
-            //Show alert dialog box
-            alert.showAndWait();
         }
     }
 
-    public void addItems(String inputSerialNumber, String inputItemName, String inputPrice){
+    public void addItem(String inputSerialNumber, String inputItemName, String inputPrice){
 
         //Call inventoryList's addItem method
         inventoryList.addItem(inputSerialNumber, inputItemName, Double.parseDouble(inputPrice));
@@ -99,7 +93,7 @@ public class InventoryTrackerController {
         return updatedItems;
     }
 
-    public void updateTableView(ObservableList<Item> displayedItems){
+    private void updateTableView(ObservableList<Item> displayedItems){
 
         //Set the table columns to display the serial number, item name, and price
         serialNumberColumn.setCellValueFactory(new PropertyValueFactory<>("serialNumber"));
@@ -115,7 +109,7 @@ public class InventoryTrackerController {
         inventoryTableView.setItems(displayedItems);
     }
 
-    public void clearTextFields(){
+    private void clearTextFields(){
         //Clear serial number input text field
         serialNumberInputField.clear();
         //Clear item name input text field
@@ -154,6 +148,101 @@ public class InventoryTrackerController {
             if(selectedItem == inventoryList.getItemList().get(keys.get(i))){
                 inventoryList.getItemList().remove(keys.get(i));
                 break;
+            }
+        }
+    }
+
+    @FXML
+    public void editStart(){
+
+        //Get the item that user wants to edit
+        int selectedItemIndex = inventoryTableView.getSelectionModel().getSelectedIndex();
+        Item selectedItem = displayedItems.get(selectedItemIndex);
+
+        //Store the current serial number of item
+        currentSerialNumber = selectedItem.getSerialNumber();
+    }
+
+    @FXML
+    public void editCommit(TableColumn.CellEditEvent<Item, String> event){
+
+        //Gets the row and column of the edited cell
+        int row = event.getTablePosition().getRow();
+        int column = event.getTablePosition().getColumn();
+
+        //Get new values from table
+        String newValue = event.getNewValue();
+
+        //Validate the format of the input data according to the column number
+        boolean validEdit = false;
+        switch (column) {
+            case 0 -> validEdit = validator.validatePrice(newValue);
+            case 1 -> validEdit = validator.validateSerialNumber(newValue, inventoryList.getItemList());
+            case 2 -> validEdit = validator.validateItemName(newValue);
+        }
+
+        //If user edit is valid, commit the edit into TreeMap
+        if (validEdit){
+            editItem(column, row, newValue, currentSerialNumber);
+        }
+        //If edit is invalid display warning dialog box
+        else{
+            warningDialogHandler(column);
+        }
+        //Update TableView to reflect changes if edit is valid or revert to original value if edit is invalid
+        updateTableView(displayedItems);
+    }
+
+    private void warningDialogHandler(int category){
+
+        //Set warning message according to which input is invalid
+        String warningMessage = "";
+
+        switch (category) {
+            case 0 -> warningMessage = "Price must be number larger than 0.";
+            case 1 -> warningMessage = "Please enter a unique alphanumeric serial number of 10 characters.";
+            case 2 -> warningMessage = "Item name must be between 2 and 256 characters long.";
+        }
+
+        //Create new alert
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        //Set title, header, and content text of alert dialog box
+        alert.setTitle("Invalid Input");
+        alert.setHeaderText("Invalid input.");
+        alert.setContentText(warningMessage);
+        //Show alert dialog box
+        alert.showAndWait();
+    }
+
+    public void editItem(int column, int row, String newValue, String currentSerialNumber){
+
+        //Update inventory list depending on which value was updated
+        switch (column) {
+            //Column 0 updates price
+            case 0 -> {
+                //Set price of corresponding item in TreeMap to new value
+                inventoryList.getItemList().get(currentSerialNumber).setPrice(Double.parseDouble(newValue));
+                //Update displayedItems Observable List
+                displayedItems = getDisplayedItemsList();
+            }
+            case 1 -> {
+                //Get edited item from Observable List
+                displayedItems = getDisplayedItemsList();
+                Item editedItem = displayedItems.get(row);
+                //Set serial number to new value
+                editedItem.setSerialNumber(newValue);
+                //Remove item from TreeMap
+                inventoryList.getItemList().remove(currentSerialNumber);
+                //Add edited item with new serial number as its key
+                inventoryList.getItemList().put(newValue, editedItem);
+                //Update displayedItems Observable List
+                displayedItems = getDisplayedItemsList();
+            }
+            case 2 -> {
+                //Set item name of corresponding item in TreeMap to new value
+                inventoryList.getItemList().get(currentSerialNumber).setItemName(newValue);
+                //Update displayedItems Observable List
+                displayedItems = getDisplayedItemsList();
             }
         }
     }
