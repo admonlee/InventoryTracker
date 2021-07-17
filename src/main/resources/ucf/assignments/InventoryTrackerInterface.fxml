@@ -47,7 +47,7 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <TextField prefHeight="26.0" prefWidth="666.0" promptText="Search by Serial Number or Name" />
+            <TextField fx:id="searchBar" onAction="#searchBarTyped" prefHeight="26.0" prefWidth="666.0" promptText="Search by Serial Number or Name" />
          </children>
       </HBox>
    </children>

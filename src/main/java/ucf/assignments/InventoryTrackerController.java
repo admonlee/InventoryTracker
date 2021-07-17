@@ -22,6 +22,7 @@ public class InventoryTrackerController {
     @FXML private TextField serialNumberInputField;
     @FXML private TextField itemNameInputField;
     @FXML private TextField priceInputField;
+    @FXML private TextField searchBar;
     @FXML private TableColumn<Item, String> serialNumberColumn;
     @FXML private TableColumn<Item, String> itemNameColumn;
     @FXML private TableColumn<Item, String> priceColumn;
@@ -51,8 +52,6 @@ public class InventoryTrackerController {
         if (validPrice && validSerialNumber && validInputName){
             //Add item to inventory list
             addItem(inputSerialNumber, inputItemName, inputPrice);
-            //Get inventory list as observable list
-            displayedItems = getDisplayedItemsList();
             //Update table view with observable list
             updateTableView(displayedItems);
             //Clear text fields
@@ -76,6 +75,8 @@ public class InventoryTrackerController {
 
         //Call inventoryList's addItem method
         inventoryList.addItem(inputSerialNumber, inputItemName, Double.parseDouble(inputPrice));
+        //Get inventory list as observable list
+        displayedItems = getDisplayedItemsList();
     }
 
     public ObservableList<Item> getDisplayedItemsList(){
@@ -227,7 +228,6 @@ public class InventoryTrackerController {
             }
             case 1 -> {
                 //Get edited item from Observable List
-                displayedItems = getDisplayedItemsList();
                 Item editedItem = displayedItems.get(row);
                 //Set serial number to new value
                 editedItem.setSerialNumber(newValue);
@@ -245,5 +245,38 @@ public class InventoryTrackerController {
                 displayedItems = getDisplayedItemsList();
             }
         }
+    }
+
+    @FXML
+    public void searchBarTyped(){
+
+        //Set displayedItems to search results if search query is provided, otherwise set to display all items
+        if (searchBar.getText().equals("")){
+            displayedItems = getDisplayedItemsList();
+        }
+        else{
+            String searchString = searchBar.getText();
+            displayedItems = getSearchResults(searchString);
+        }
+        //Update table with either search results or full list
+        updateTableView(displayedItems);
+    }
+
+    public ObservableList<Item> getSearchResults(String searchString){
+
+        //Create Observable List to store search results
+        ObservableList<Item> searchResults = FXCollections.observableArrayList();
+        //Get list of keys of inventoryList TreeMap
+        List<String> keys = inventoryList.getItemList().keySet().stream().toList();
+        //Iterate through TreeMap using keys to check if search query matches any serial numbers or item names
+        for(String key : keys){
+            if (key.toLowerCase().contains(searchString.toLowerCase()) || inventoryList.getItemList().get(key).getItemName().toLowerCase().contains(searchString.toLowerCase())){
+                //Add to search results
+                searchResults.add(inventoryList.getItemList().get(key));
+            }
+        }
+
+        //Return search results
+        return searchResults;
     }
 }
