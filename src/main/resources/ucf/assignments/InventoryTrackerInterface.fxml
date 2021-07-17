@@ -30,7 +30,7 @@
          <contextMenu>
             <ContextMenu>
               <items>
-                <MenuItem mnemonicParsing="false" text="Delete Item" />
+                <MenuItem mnemonicParsing="false" onAction="#deleteButtonClicked" text="Delete Item" />
               </items>
             </ContextMenu>
          </contextMenu>

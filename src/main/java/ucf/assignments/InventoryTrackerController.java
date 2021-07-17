@@ -27,6 +27,7 @@ public class InventoryTrackerController {
     @FXML private TableColumn<Item, String> priceColumn;
     @FXML private TableView<Item> inventoryTableView;
 
+    private ObservableList<Item> displayedItems = FXCollections.observableArrayList();
     private final InventoryList inventoryList = new InventoryList();
     private final Validator validator = new Validator();
 
@@ -48,7 +49,7 @@ public class InventoryTrackerController {
             //Add item to inventory list
             addItems(inputSerialNumber, inputItemName, inputPrice);
             //Get inventory list as observable list
-            ObservableList<Item> displayedItems = getDisplayedItemsList();
+            displayedItems = getDisplayedItemsList();
             //Update table view with observable list
             updateTableView(displayedItems);
             //Clear text fields
@@ -86,16 +87,16 @@ public class InventoryTrackerController {
     public ObservableList<Item> getDisplayedItemsList(){
 
         //Create Observable List to display items in TableView
-        ObservableList<Item> displayedItems = FXCollections.observableArrayList();
+        ObservableList<Item> updatedItems = FXCollections.observableArrayList();
         //Get list of keys in inventoryList map
         List<String> keys = inventoryList.getItemList().keySet().stream().toList();
         //Iterate through inventoryList to add items to Observable List
         for (String key : keys) {
-            displayedItems.add(inventoryList.getItemList().get(key));
+            updatedItems.add(inventoryList.getItemList().get(key));
         }
 
         //Return observable list of items
-        return displayedItems;
+        return updatedItems;
     }
 
     public void updateTableView(ObservableList<Item> displayedItems){
@@ -121,5 +122,39 @@ public class InventoryTrackerController {
         itemNameInputField.clear();
         //Clear price input text field
         priceInputField.clear();
+    }
+
+    @FXML
+    public void deleteButtonClicked(){
+
+        //Get index of selected item
+        int selectedItemIndex = inventoryTableView.getSelectionModel().getSelectedIndex();
+
+        //If an item is selected, selectedItemIndex will be >= 0
+        if (selectedItemIndex > -1){
+            //Get selected item from Observable List
+            Item selectedItem = displayedItems.get(selectedItemIndex);
+            //Delete selected item
+            deleteItem(selectedItem);
+            //Get updated inventory list as observable list
+            displayedItems = getDisplayedItemsList();
+            //Update table view with observable list
+            updateTableView(displayedItems);
+        }
+    }
+
+    public void deleteItem(Item selectedItem){
+
+        //Get list of keys in inventory TreeMap
+        List<String> keys = inventoryList.getItemList().keySet().stream().toList();
+
+        //Remove item from TreeMap
+        for(int i = 0; i < inventoryList.getItemList().size(); i++){
+            //If selected item is equal to item in current iteration, remove from TreeMap
+            if(selectedItem == inventoryList.getItemList().get(keys.get(i))){
+                inventoryList.getItemList().remove(keys.get(i));
+                break;
+            }
+        }
     }
 }
