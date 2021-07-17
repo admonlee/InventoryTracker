@@ -52,8 +52,9 @@ public class InventoryTrackerController {
         if (validPrice && validSerialNumber && validInputName){
             //Add item to inventory list
             addItem(inputSerialNumber, inputItemName, inputPrice);
-            //Update table view with observable list
-            updateTableView(displayedItems);
+            //Update table view with observable list with searchBarTyped to only show search results if applicable,
+            //otherwise all results shown
+            searchBarTyped();
             //Clear text fields
             clearTextFields();
         }
@@ -76,12 +77,12 @@ public class InventoryTrackerController {
         //Call inventoryList's addItem method
         inventoryList.addItem(inputSerialNumber, inputItemName, Double.parseDouble(inputPrice));
         //Get inventory list as observable list
-        displayedItems = getCompleteItemList();
+        displayedItems = getItemObservableList();
     }
 
-    public ObservableList<Item> getCompleteItemList(){
+    public ObservableList<Item> getItemObservableList(){
 
-        return inventoryList.getCompleteInventoryList();
+        return inventoryList.getItemObservableList();
     }
 
     private void updateTableView(ObservableList<Item> displayedItems){
@@ -122,9 +123,10 @@ public class InventoryTrackerController {
             //Delete selected item
             deleteItem(selectedItem);
             //Get updated inventory list as observable list
-            displayedItems = getCompleteItemList();
-            //Update table view with observable list
-            updateTableView(displayedItems);
+            displayedItems = getItemObservableList();
+            //Update table view with observable list with searchBarTyped to only show search results if applicable,
+            //otherwise all results shown
+            searchBarTyped();
         }
     }
 
@@ -214,7 +216,7 @@ public class InventoryTrackerController {
                 //Set price of corresponding item in TreeMap to new value
                 inventoryList.getItemList().get(currentSerialNumber).setPrice(Double.parseDouble(newValue));
                 //Update displayedItems Observable List
-                displayedItems = getCompleteItemList();
+                displayedItems = getItemObservableList();
             }
             case 1 -> {
                 //Get edited item from Observable List
@@ -226,13 +228,13 @@ public class InventoryTrackerController {
                 //Add edited item with new serial number as its key
                 inventoryList.getItemList().put(newValue, editedItem);
                 //Update displayedItems Observable List
-                displayedItems = getCompleteItemList();
+                displayedItems = getItemObservableList();
             }
             case 2 -> {
                 //Set item name of corresponding item in TreeMap to new value
                 inventoryList.getItemList().get(currentSerialNumber).setItemName(newValue);
                 //Update displayedItems Observable List
-                displayedItems = getCompleteItemList();
+                displayedItems = getItemObservableList();
             }
         }
     }
@@ -242,7 +244,7 @@ public class InventoryTrackerController {
 
         //Set displayedItems to search results if search query is provided, otherwise set to display all items
         if (searchBar.getText().equals("")){
-            displayedItems = getCompleteItemList();
+            displayedItems = getItemObservableList();
         }
         else{
             String searchString = searchBar.getText();

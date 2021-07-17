@@ -26,7 +26,7 @@ public class InventoryList {
         return itemList;
     }
 
-    public ObservableList<Item> getCompleteInventoryList(){
+    public ObservableList<Item> getItemObservableList(){
 
         //Create Observable List to display items in TableView
         ObservableList<Item> updatedItems = FXCollections.observableArrayList();

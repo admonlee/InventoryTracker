@@ -8,18 +8,15 @@ deleteButtonClicked()
 editStart()
 editCommit()
 searchBarTyped()
-tableColumnModified()
 saveButtonClicked()
 openButtonClicked()
-validateItemName()
-validateSerialNumber()
-validatePrice()
+warningDialogHandler()
 addItem()
 deleteItem()
 editItem()
 save()
 open()
-getDisplayedItems()
+getItemObservableList()
 updateTableView()
 clearTextFields()
 }
@@ -30,6 +27,9 @@ itemList : TreeMap
 addItem()
 deleteItem()
 editItem()
+getItemList()
+getItemObservableList()
+getSearchResults()
 }
 
 class Item
@@ -54,6 +54,13 @@ getTSVString()
 save()
 getFileInput()
 getItemList()
+}
+
+class Validator
+{
+validateItemName()
+validateSerialNumber()
+validatePrice()
 }
 
 InventoryTrackerController -- InventoryList
