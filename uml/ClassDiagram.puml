@@ -3,6 +3,7 @@
 class InventoryTrackerController
 {
 currentSerialNumber : String
+displayedItems : ObservableList<Item>
 addItemButtonClicked()
 deleteButtonClicked()
 editStart()
@@ -14,8 +15,6 @@ warningDialogHandler()
 addItem()
 deleteItem()
 editItem()
-save()
-open()
 getItemObservableList()
 updateTableView()
 clearTextFields()
@@ -25,8 +24,6 @@ class InventoryList
 {
 itemList : TreeMap
 addItem()
-deleteItem()
-editItem()
 getItemList()
 getItemObservableList()
 getSearchResults()

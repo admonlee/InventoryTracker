@@ -33,7 +33,7 @@ public class InventoryTrackerController {
     private Stage stage;
 
     private ObservableList<Item> displayedItems = FXCollections.observableArrayList();
-    private final InventoryList inventoryList = new InventoryList();
+    private InventoryList inventoryList = new InventoryList();
     private final Validator validator = new Validator();
 
     //Variable to store the serial number of item being edited to access TreeMap
@@ -264,6 +264,25 @@ public class InventoryTrackerController {
 
     @FXML
     public void openButtonClicked(){
+
+        //Create a new file chooser and set it to show txt, html, and json files
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("TSV Files", "*.txt"),
+                new FileChooser.ExtensionFilter("HTML Files", "*.html"),
+                new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+        //Get location and file type using file chooser
+        File selectedFile = fileChooser.showOpenDialog(stage);
+
+        //Create new fileManager object
+        FileManager fileManager = new FileManager(selectedFile);
+        //If user selects a file, save the file
+        if (selectedFile != null){
+            inventoryList = fileManager.open();
+            displayedItems = getItemObservableList();
+            updateTableView(displayedItems);
+        }
 
     }
 

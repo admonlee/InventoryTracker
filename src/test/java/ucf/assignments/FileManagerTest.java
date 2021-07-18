@@ -83,7 +83,7 @@ class FileManagerTest {
         //Get TSV string
         String actual = fileManager.getTSVString(inventoryList);
 
-        String expected = "1234567890\tTest\t$12.50\n";
+        String expected = "$12.50\t1234567890\tTest\n";
 
         //Assert that TSV string matches intended format
         assertEquals(expected, actual);
@@ -103,7 +103,7 @@ class FileManagerTest {
         //Get TSV string
         String actual = fileManager.getTSVString(inventoryList);
 
-        String expected = "1234567890\tTest\t$12.50\nqwertyuiop\tTest\t$20.00\n";
+        String expected = "$12.50\t1234567890\tTest\n$20.00\tqwertyuiop\tTest\n";
 
         //Assert that TSV string matches intended format
         assertEquals(expected, actual);
@@ -125,9 +125,9 @@ class FileManagerTest {
         String expected = """
                 <table>
                 <tr>
+                <td>$12.50</td>
                 <td>1234567890</td>
                 <td>Test</td>
-                <td>$12.50</td>
                 </tr>
                 </table>""";
 
@@ -152,18 +152,159 @@ class FileManagerTest {
         String expected = """
                 <table>
                 <tr>
+                <td>$12.50</td>
                 <td>1234567890</td>
                 <td>Test</td>
-                <td>$12.50</td>
                 </tr>
                 <tr>
+                <td>$20.00</td>
                 <td>qwertyuiop</td>
                 <td>Test</td>
-                <td>$20.00</td>
                 </tr>
                 </table>""";
 
         //Assert that HTML string matches intended format
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void parseJSON_one_object(){
+
+        //Create JSON input string representing one object
+        String input = """
+                {
+                  "itemList": {
+                    "1234567890": {
+                      "serialNumber": "1234567890",
+                      "itemName": "Test",
+                      "price": "12.50"
+                    }
+                  }
+                }""";
+
+        //Create new file manager
+        FileManager fileManager = new FileManager(new File("Test.txt"));
+
+        //Get inventory list from JSON parser
+        InventoryList inventoryList = fileManager.parseJSON(input);
+
+        //Assert that inventory list has one item
+        assertEquals(1, inventoryList.getItemList().size());
+    }
+
+    @Test
+    void parseJSON_multiple_objects(){
+
+        //Create JSON input string representing two objects
+        String input = """
+                {
+                  "itemList": {
+                    "1234567890": {
+                      "serialNumber": "1234567890",
+                      "itemName": "Test 1",
+                      "price": "12.50"
+                    },
+                    "qwertyuiop": {
+                      "serialNumber": "qwertyuiop",
+                      "itemName": "Test 2",
+                      "price": "25.00"
+                    }
+                  }
+                }""";
+
+        //Create new file manager
+        FileManager fileManager = new FileManager(new File("Test.txt"));
+
+        //Get inventory list from JSON parser
+        InventoryList inventoryList = fileManager.parseJSON(input);
+
+        //Assert that inventory list has two item
+        assertEquals(2, inventoryList.getItemList().size());
+    }
+
+    @Test
+    void parseTSV_one_object(){
+
+        //Create TSV input string representing one object
+        String input = "$12.50\t1234567890\tTest\n";
+
+        //Create new file manager
+        FileManager fileManager = new FileManager(new File("Test.txt"));
+
+        //Get inventory list from TSV parser
+        InventoryList inventoryList = fileManager.parseTSV(input);
+
+        //Assert that inventory list has one item
+        assertEquals(1, inventoryList.getItemList().size());
+
+    }
+
+    @Test
+    void parseTSV_multiple_objects(){
+
+        //Create TSV input string representing two objects
+        String input = "$12.50\t1234567890\tTest\n$20.00\tqwertyuiop\tTest\n";
+
+        //Create new file manager
+        FileManager fileManager = new FileManager(new File("Test.txt"));
+
+        //Get inventory list from TSV parser
+        InventoryList inventoryList = fileManager.parseTSV(input);
+
+        //Assert that inventory list has one item
+        assertEquals(2, inventoryList.getItemList().size());
+
+    }
+
+    @Test
+    void parseHTML_one_object(){
+
+        //Create HTML string input representing one object
+        String input = """
+                <table>
+                <tr>
+                <td>$12.50</td>
+                <td>1234567890</td>
+                <td>Test</td>
+                </tr>
+                </table>""";
+
+        //Create new file manager
+        FileManager fileManager = new FileManager(new File("Test.txt"));
+
+        //Get inventory list from HTML parser
+        InventoryList inventoryList = fileManager.parseHTML(input);
+
+        //Assert that inventory list has one item
+        assertEquals(1, inventoryList.getItemList().size());
+
+    }
+
+    @Test
+    void parseHTML_two_objects(){
+
+        //Create HTML string input representing two objects
+        String input = """
+                <table>
+                <tr>
+                <td>$12.50</td>
+                <td>1234567890</td>
+                <td>Test</td>
+                </tr>
+                <tr>
+                <td>$20.00</td>
+                <td>qwertyuiop</td>
+                <td>Test</td>
+                </tr>
+                </table>""";
+
+        //Create new file manager
+        FileManager fileManager = new FileManager(new File("Test.txt"));
+
+        //Get inventory list from HTML parser
+        InventoryList inventoryList = fileManager.parseHTML(input);
+
+        //Assert that inventory list has one item
+        assertEquals(2, inventoryList.getItemList().size());
     }
 }
