@@ -12,10 +12,6 @@ searchBarTyped()
 saveButtonClicked()
 openButtonClicked()
 warningDialogHandler()
-addItem()
-deleteItem()
-editItem()
-getItemObservableList()
 updateTableView()
 clearTextFields()
 }
@@ -24,6 +20,8 @@ class InventoryList
 {
 itemList : TreeMap
 addItem()
+editItem()
+deleteItem()
 getItemList()
 getItemObservableList()
 getSearchResults()

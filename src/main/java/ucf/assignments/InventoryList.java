@@ -17,6 +17,7 @@ public class InventoryList {
 
     //Overloaded method with price as a double
     public void addItem(String serialNumber, String name, double price){
+
         //Create new item
         Item newItem = new Item(serialNumber, name, price);
         //Add new item to TreeMap with serial number as the key
@@ -25,10 +26,48 @@ public class InventoryList {
 
     //Overloaded method with price as a string with "$" symbol
     public void addItem(String serialNumber, String name, String price){
+
         //Create new item
         Item newItem = new Item(serialNumber, name, price);
         //Add new item to TreeMap with serial number as the key
         itemList.put(serialNumber, newItem);
+    }
+
+    public void editItem(int column, String newValue, String currentSerialNumber){
+
+        //Update inventory list depending on which value was updated
+        switch (column) {
+            //Column 0 updates price
+            case 0 -> //Set price of corresponding item in TreeMap to new value
+                    itemList.get(currentSerialNumber).setPrice(Double.parseDouble(newValue));
+            case 1 -> {
+                //Get edited item from Observable List
+                Item editedItem = itemList.get(currentSerialNumber);
+                //Set serial number to new value
+                editedItem.setSerialNumber(newValue);
+                //Remove item from TreeMap
+                itemList.remove(currentSerialNumber);
+                //Add edited item with new serial number as its key
+                itemList.put(newValue, editedItem);
+            }
+            case 2 -> //Set item name of corresponding item in TreeMap to new value
+                    itemList.get(currentSerialNumber).setItemName(newValue);
+        }
+    }
+
+    public void deleteItem(Item selectedItem){
+
+        //Get list of keys in inventory TreeMap
+        List<String> keys = itemList.keySet().stream().toList();
+
+        //Remove item from TreeMap
+        for(int i = 0; i < itemList.size(); i++){
+            //If selected item is equal to item in current iteration, remove from TreeMap
+            if(selectedItem == itemList.get(keys.get(i))){
+                itemList.remove(keys.get(i));
+                break;
+            }
+        }
     }
 
     public TreeMap<String, Item> getItemList() {
