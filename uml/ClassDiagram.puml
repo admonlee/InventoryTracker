@@ -48,6 +48,7 @@ setPrice()
 class FileManager
 {
 selectedFile : File
+getFileType()
 getJSONString()
 getHTMLString()
 getTSVString()
@@ -66,5 +67,6 @@ validatePrice()
 InventoryTrackerController -- InventoryList
 InventoryList -- Item
 InventoryTrackerController -- FileManager
+InventoryTrackerController -- Validator
 
 @enduml

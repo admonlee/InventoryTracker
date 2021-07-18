@@ -15,7 +15,16 @@ public class InventoryList {
 
     TreeMap<String, Item> itemList = new TreeMap<>();
 
+    //Overloaded method with price as a double
     public void addItem(String serialNumber, String name, double price){
+        //Create new item
+        Item newItem = new Item(serialNumber, name, price);
+        //Add new item to TreeMap with serial number as the key
+        itemList.put(serialNumber, newItem);
+    }
+
+    //Overloaded method with price as a string with "$" symbol
+    public void addItem(String serialNumber, String name, String price){
         //Create new item
         Item newItem = new Item(serialNumber, name, price);
         //Add new item to TreeMap with serial number as the key

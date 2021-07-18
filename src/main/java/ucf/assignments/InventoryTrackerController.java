@@ -14,7 +14,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.List;
 
 public class InventoryTrackerController {
@@ -27,6 +30,7 @@ public class InventoryTrackerController {
     @FXML private TableColumn<Item, String> itemNameColumn;
     @FXML private TableColumn<Item, String> priceColumn;
     @FXML private TableView<Item> inventoryTableView;
+    private Stage stage;
 
     private ObservableList<Item> displayedItems = FXCollections.observableArrayList();
     private final InventoryList inventoryList = new InventoryList();
@@ -256,5 +260,31 @@ public class InventoryTrackerController {
 
     public InventoryList getInventoryList(){
         return inventoryList;
+    }
+
+    @FXML
+    public void openButtonClicked(){
+
+    }
+
+    @FXML
+    public void saveButtonClicked(){
+
+        //Create a new file chooser and set it to show txt, html, and json files
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("TSV Files", "*.txt"),
+                new FileChooser.ExtensionFilter("HTML Files", "*.html"),
+                new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+        //Get location and file type using file chooser
+        File selectedFile = fileChooser.showSaveDialog(stage);
+
+        //Create new fileManager object
+        FileManager fileManager = new FileManager(selectedFile);
+        //If user selects a file, save the file
+        if (selectedFile != null){
+            fileManager.save(inventoryList);
+        }
     }
 }

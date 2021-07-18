@@ -41,13 +41,13 @@
               <menus>
                 <Menu mnemonicParsing="false" text="File">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Open" />
-                        <MenuItem mnemonicParsing="false" text="Save" />
+                    <MenuItem mnemonicParsing="false" onAction="#openButtonClicked" text="Open" />
+                        <MenuItem mnemonicParsing="false" onAction="#saveButtonClicked" text="Save" />
                   </items>
                 </Menu>
               </menus>
             </MenuBar>
-            <TextField fx:id="searchBar" onAction="#searchBarTyped" prefHeight="26.0" prefWidth="666.0" promptText="Search by Serial Number or Name" />
+            <TextField fx:id="searchBar" onKeyTyped="#searchBarTyped" prefHeight="26.0" prefWidth="666.0" promptText="Search by Serial Number or Name" />
          </children>
       </HBox>
    </children>

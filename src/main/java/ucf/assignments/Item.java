@@ -12,10 +12,18 @@ public class Item {
     private String itemName;
     private String price;
 
-    public Item(String serialNumber, String itemName, Double price) {
+    //Overloaded constructor that takes price as a double
+    public Item(String serialNumber, String itemName, double price) {
         this.serialNumber = serialNumber;
         this.itemName = itemName;
         this.price = String.format("$%.2f", price);
+    }
+
+    //Overloaded constructor that takes price as a string with a "$" symbol
+    public Item(String serialNumber, String itemName, String price) {
+        this.serialNumber = serialNumber;
+        this.itemName = itemName;
+        this.price = price;
     }
 
     public String getSerialNumber() {
@@ -38,8 +46,14 @@ public class Item {
         return price;
     }
 
+    //Overloaded setter for price as a double
     public void setPrice(double price) {
         this.price = String.format("$%.2f", price);
+    }
+
+    //Overloaded setter for price as a string with a "$" symbol
+    public void setPrice(String price) {
+        this.price = price;
     }
 
 }
