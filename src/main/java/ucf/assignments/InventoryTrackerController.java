@@ -18,6 +18,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.util.Comparator;
 
 public class InventoryTrackerController {
 
@@ -77,6 +78,13 @@ public class InventoryTrackerController {
     }
 
     private void updateTableView(ObservableList<Item> displayedItems){
+
+        //Create custom comparator to sort price column by actual value, ignoring '$' symbol
+        Comparator<String> columnComparator =
+                Comparator.comparingDouble((String v) -> Double.parseDouble(v.substring(1)));
+
+        //Set custom comparator onto price column
+        priceColumn.setComparator(columnComparator);
 
         //Set the table columns to display the serial number, item name, and price
         serialNumberColumn.setCellValueFactory(new PropertyValueFactory<>("serialNumber"));
@@ -214,9 +222,10 @@ public class InventoryTrackerController {
 
         //Create new fileManager object
         FileManager fileManager = new FileManager(selectedFile);
-        //If user selects a file, save the file
+        //If user selects a file, open the file
         if (selectedFile != null){
             inventoryList = fileManager.open();
+            //Update table
             displayedItems = inventoryList.getItemObservableList();
             updateTableView(displayedItems);
         }
