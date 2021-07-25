@@ -128,6 +128,9 @@ class FileManagerTest {
         String actual = fileManager.getHTMLString(inventoryList);
 
         String expected = """
+                <style>
+                table, th, td {border: 1px solid black};
+                </style>
                 <table>
                 <tr>
                 <td>$12.50</td>
@@ -155,6 +158,9 @@ class FileManagerTest {
         String actual = fileManager.getHTMLString(inventoryList);
 
         String expected = """
+                <style>
+                table, th, td {border: 1px solid black};
+                </style>
                 <table>
                 <tr>
                 <td>$12.50</td>
@@ -266,6 +272,9 @@ class FileManagerTest {
 
         //Create HTML string input representing one object
         String input = """
+                <style>
+                table, th, td {border: 1px solid black};
+                </style>
                 <table>
                 <tr>
                 <td>$12.50</td>
@@ -290,6 +299,9 @@ class FileManagerTest {
 
         //Create HTML string input representing two objects
         String input = """
+                <style>
+                table, th, td {border: 1px solid black};
+                </style>
                 <table>
                 <tr>
                 <td>$12.50</td>

@@ -76,6 +76,7 @@ public class FileManager {
         //Get list of keys in inventory list for iterating
         List<String> keys = inventoryList.getItemList().keySet().stream().toList();
         //Add table start tag
+        saveString.append("<style>\ntable, th, td {border: 1px solid black};\n</style>\n");
         saveString.append("<table>\n");
         for (String key : keys){
             //Add row and element start tag
